@@ -17,6 +17,30 @@ class Server:
         self.group = grp.Group()
         #start server
         self.server=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#==============================================================================
+#       SERVER SIDE TCP SOCKET NOTES 
+#        Above is a TCP-socket, socket.AF_inet for family and socket.SOCK_STREAM for type
+#        The Socket object has the following main methods:
+#        1. bind("localhost", PORT_NUMBER): specific for server socket
+#        2. listen(1): 
+#                -specific for server socket
+#        3. accept(): used to accept an incoming connection, will block 
+#                      until a new client connects. When client connects, it will
+#                        create a new socket and return it together with the client's address
+#                -specific for server socket 
+#        4. connect(): specific for client socket
+#        5. send(): 
+#                   -both types (server/client)
+#        6. recv(1024): example: socketA.recv(1024) will read data from socketA in batches of 1024 bytes
+#                   -both types (server/client)
+#        7. sendall(data): will send all data back to socketB.sendall(data) while repeatedly calling
+#                            the recv()  -  Ignore this for now.
+        
+#       ALL socket methods block, meaning they do not let program do anything else when it 
+#        is reading from a socket or writing to the program
+#       
+#==============================================================================
+        
         self.server.bind(SERVER)
         self.server.listen(5)
         self.all_sockets.append(self.server)
