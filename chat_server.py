@@ -1,3 +1,24 @@
+#==============================================================================
+# Index
+# 
+# class Server:
+#         __init__:
+#                 new_clients list
+#                 logged_name2sock dictionary
+#                 logged_sock2name dictionary
+#                 all_sockets list
+#                 group as a Group class object from chat_group.py
+#                 server object created using select module
+#                 indices dictionary
+#         methods:
+#                 new_client(self, sock)
+#                 login(self, sock)
+#                 logout(self, sock)
+#                 handle_msg(self, from_sock)
+#                 run(self)
+#         
+#==============================================================================
+
 import time
 import socket
 import select
@@ -66,7 +87,7 @@ class Server:
     def new_client(self, sock):
         #add to all sockets and to new clients
         print('new client...')
-        sock.setblocking(0)
+        sock.setblocking(0) #SETS socket TO NONBLOCKING
         self.new_clients.append(sock)
         self.all_sockets.append(sock)
 
@@ -222,10 +243,13 @@ class Server:
         print ('starting server...')
         while(1):
            read,write,error=select.select(self.all_sockets,[],[])
+#           read = read sockets
+#           write = write socketw
+#           error = list of sockets with errors
            print('checking logged clients..')
            for logc in list(self.logged_name2sock.values()):
                if logc in read:
-                   self.handle_msg(logc)
+                   self.handle_msg(logc) #calls handle_msg(sock) for each socket IF its in read socket list
            print('checking new clients..')
            for newc in self.new_clients[:]:
                if newc in read:
@@ -234,6 +258,7 @@ class Server:
            if self.server in read :
                #new client request
                sock, address=self.server.accept()
+#               print("sock: " + str(sock) + "address: " + str(address))
                self.new_client(sock)
            
 def main():
