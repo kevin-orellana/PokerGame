@@ -29,6 +29,22 @@ import pickle as pkl
 from chat_utils import *
 import chat_group as grp
 
+M_UNDEF     = '0'
+M_LOGIN     = '1'
+M_CONNECT   = '2'
+M_EXCHANGE  = '3'
+M_LOGOUT    = '4'
+M_DISCONNECT= '5'
+M_SEARCH    = '6'
+M_LIST      = '7'
+M_POEM      = '8'
+M_TIME      = '9'
+
+#CHAT_IP = ''
+CHAT_IP = socket.gethostname()
+CHAT_PORT = 1112
+SERVER = (CHAT_IP, CHAT_PORT)
+
 class Server:
     def __init__(self):
         self.new_clients = [] #list of new sockets of which the user id is not known
@@ -95,8 +111,9 @@ class Server:
         #read the msg that should have login code plus username
         msg = myrecv(sock)
         if len(msg) > 0:
+            
             code = msg[0]
-
+            
             if code == M_LOGIN: 
                 name = msg[1:]
                 if self.group.is_member(name) != True:
@@ -140,7 +157,7 @@ class Server:
         #msg is the string sent by the client state machine: IMPORTANT
         msg = myrecv(from_sock)  #myrecv(from_sock) returns "0__", "1__",...
         if len(msg) > 0:
-            code = msg[0] #
+            code = msg[0] 
 #==============================================================================
 #             handle connect request: this is implemented for you
 #==============================================================================
@@ -257,7 +274,7 @@ class Server:
            print('checking for new connections..')
            if self.server in read :
                #new client request
-               sock, address=self.server.accept()
+#               sock, address=self.server.accept()
 #               print("sock: " + str(sock) + "address: " + str(address))
                self.new_client(sock)
            

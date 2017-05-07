@@ -1,3 +1,37 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun May  7 20:15:44 2017
+
+@author: kevinorellana
+"""
+#==============================================================================
+#                     <---- Index ---->
+# class Player:
+#     init:
+#         peer
+#         console_input
+#         state
+#         system_msg: uses proc method to get msg from server
+#         local_msg
+#         socket
+#         sm
+#         name
+#     methods:
+#         quit
+#         get_name
+#         init_chhat
+#         send
+#         recv
+#         get_msgs: uses select module to read info from self.socket
+#         output
+#         login
+#         read_input
+#         print_instructions
+#         run_chat
+#         proc
+#         
+#==============================================================================
+
 import time
 import socket
 import select
@@ -7,7 +41,7 @@ import client_state_machine as csm
 
 import threading
 
-class Client:
+class Player:
     def __init__(self):
         self.peer = ''
         self.console_input = []
@@ -15,6 +49,8 @@ class Client:
         self.system_msg = ''
         self.local_msg = ''
         self.peer_msg = ''        
+        self.socket = None #MIGHT NEED TO DELETE IF IT DOESNT WORK. ADDED by Kevin
+        self.sm = None #MIGHT NEED TO DELETE ..
         
     def quit(self):
         self.socket.shutdown(socket.SHUT_RDWR)
@@ -35,7 +71,8 @@ class Client:
         else:
             self.socket.connect(SERVER)
 
-        self.sm = csm.ClientSM(self.socket)
+        self.sm = csm.ClientSM(self.socket) #CLIENT STATE MACHINE
+        
         reading_thread = threading.Thread(target=self.read_input)
         reading_thread.daemon = True
         reading_thread.start()
@@ -123,7 +160,7 @@ class Client:
         self.system_msg += self.sm.proc(my_msg, peer_code, peer_msg)
 
 def main():
-    client = Client()
-    client.run_chat()
+    player = Player()
+    player.run_chat()
     
 main()

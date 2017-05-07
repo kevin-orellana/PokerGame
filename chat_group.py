@@ -21,6 +21,7 @@ class Group:
         self.members = {}
         self.chat_grps = {}
         self.grp_ever = 0
+        self.size = len(self.members)
         
     def join(self, name):
         self.members[name] = S_ALONE
